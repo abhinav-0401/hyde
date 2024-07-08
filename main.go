@@ -2,24 +2,39 @@ package main
 
 import (
 	"bufio"
-	"flag"
+	// "flag"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/abhinav-0401/hyde/ast"
 	"github.com/abhinav-0401/hyde/lexer"
 	"github.com/abhinav-0401/hyde/util"
 )
 
 func main() {
-	var srcFile = flag.String("src", "", "source script file name")
-	flag.Parse()
+	// var srcFile = flag.String("src", "", "source script file name")
+	// flag.Parse()
+	//
+	// if *srcFile == "" {
+	// 	runPrompt()
+	// } else {
+	// 	runFile(*srcFile)
+	// }
 
-	if *srcFile == "" {
-		runPrompt()
-	} else {
-		runFile(*srcFile)
+	var expr = &ast.BinaryExpr{
+		Left: &ast.UnaryExpr{
+			Op:    lexer.Token{Kind: lexer.Minus, Lexeme: "-", Line: 1},
+			Right: &ast.NumLiteralExpr{Value: 5},
+		},
+		Right: &ast.GroupingExpr{
+			Expression: &ast.NumLiteralExpr{Value: 45.66},
+		},
+		Op: lexer.Token{Kind: lexer.Plus, Lexeme: "+", Line: 2},
 	}
+
+	var printer ast.AstPrinter = ast.AstPrinter{}
+	fmt.Println(printer.Print(expr))
 }
 
 func runPrompt() {
